@@ -1,0 +1,1330 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>NASA Hardware Explorer</title>
+
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+font-family:Arial,Helvetica,sans-serif;
+background:#050814;
+color:#fff;
+line-height:1.6;
+overflow-x:hidden
+}
+body:before{
+content:"";
+position:fixed;
+inset:0;
+background:
+radial-gradient(circle at 20% 20%,#173b6925 0,transparent 30%),
+radial-gradient(circle at 80% 70%,#7137a425 0,transparent 30%);
+pointer-events:none;
+z-index:-1
+}
+nav{
+position:sticky;
+top:0;
+z-index:100;
+display:flex;
+justify-content:space-between;
+align-items:center;
+padding:18px 6%;
+background:#050814dd;
+backdrop-filter:blur(15px);
+border-bottom:1px solid #ffffff15
+}
+.logo{
+font-size:22px;
+font-weight:900;
+letter-spacing:1px
+}
+.logo span{color:#54d9ff}
+nav ul{
+display:flex;
+gap:25px;
+list-style:none
+}
+nav a{
+color:#aebbd0;
+text-decoration:none;
+font-size:14px;
+font-weight:bold;
+transition:.3s
+}
+nav a:hover{color:#5ee2ff}
+
+.hero{
+min-height:92vh;
+display:flex;
+align-items:center;
+justify-content:center;
+text-align:center;
+position:relative;
+overflow:hidden;
+padding:80px 7%
+}
+.stars{
+position:absolute;
+inset:0;
+background-image:
+radial-gradient(#fff 1px,transparent 1px),
+radial-gradient(#fff 1px,transparent 1px);
+background-size:90px 90px,140px 140px;
+background-position:20px 30px,70px 80px;
+opacity:.25
+}
+.planet{
+position:absolute;
+width:420px;
+height:420px;
+right:-80px;
+top:80px;
+border-radius:50%;
+background:
+radial-gradient(circle at 30% 25%,#fff,#8fb2d8 7%,#355276 35%,#111d31 70%);
+box-shadow:0 0 100px #4bdcff55
+}
+.hero-content{
+position:relative;
+z-index:2;
+max-width:1000px
+}
+.badge{
+display:inline-block;
+padding:8px 16px;
+border:1px solid #54d9ff66;
+border-radius:50px;
+background:#54d9ff10;
+color:#70e2ff;
+font-weight:bold;
+font-size:13px;
+letter-spacing:1px
+}
+h1{
+font-size:clamp(50px,9vw,100px);
+line-height:.95;
+margin:25px 0;
+letter-spacing:-5px
+}
+.gradient{
+background:linear-gradient(90deg,#55dcff,#a88bff,#ff75d1);
+-webkit-background-clip:text;
+color:transparent
+}
+.hero p{
+max-width:780px;
+margin:auto;
+font-size:19px;
+color:#b8c6da
+}
+.buttons{
+margin-top:35px;
+display:flex;
+justify-content:center;
+gap:15px;
+flex-wrap:wrap
+}
+.btn{
+padding:14px 24px;
+border-radius:12px;
+text-decoration:none;
+font-weight:bold;
+border:1px solid #ffffff20;
+transition:.3s
+}
+.primary{
+background:#fff;
+color:#07101d
+}
+.secondary{
+color:#fff;
+background:#ffffff0c
+}
+.btn:hover{transform:translateY(-3px)}
+
+section{
+max-width:1250px;
+margin:auto;
+padding:100px 6%
+}
+.section-title{
+margin-bottom:45px
+}
+.kicker{
+color:#55dcff;
+font-size:12px;
+font-weight:bold;
+letter-spacing:3px;
+text-transform:uppercase
+}
+.section-title h2{
+font-size:clamp(35px,5vw,60px);
+margin:10px 0
+}
+.section-title p{
+color:#9eacc0;
+max-width:750px;
+font-size:17px
+}
+
+.stats{
+display:grid;
+grid-template-columns:repeat(4,1fr);
+gap:18px
+}
+.stat{
+padding:25px;
+border-radius:20px;
+background:#101827;
+border:1px solid #ffffff12
+}
+.stat strong{
+font-size:35px;
+display:block;
+color:#fff
+}
+.stat span{color:#8e9caf;font-size:13px}
+
+.controls{
+display:flex;
+gap:10px;
+flex-wrap:wrap;
+margin-bottom:30px
+}
+.search{
+flex:1;
+min-width:250px;
+padding:15px;
+border-radius:12px;
+border:1px solid #ffffff15;
+background:#101827;
+color:white;
+font-size:15px;
+outline:none
+}
+.filter{
+padding:12px 18px;
+border-radius:30px;
+border:1px solid #ffffff18;
+background:#101827;
+color:#aab6c8;
+cursor:pointer
+}
+.filter.active{
+background:#fff;
+color:#07101d
+}
+
+.grid{
+display:grid;
+grid-template-columns:repeat(3,1fr);
+gap:20px
+}
+.card{
+background:linear-gradient(145deg,#111b2c,#0b111d);
+border:1px solid #ffffff12;
+border-radius:22px;
+padding:25px;
+cursor:pointer;
+transition:.3s;
+position:relative;
+overflow:hidden
+}
+.card:after{
+content:"";
+position:absolute;
+width:130px;
+height:130px;
+border-radius:50%;
+right:-50px;
+top:-50px;
+background:#52dcff10
+}
+.card:hover{
+transform:translateY(-7px);
+border-color:#58ddff55;
+box-shadow:0 15px 45px #0007
+}
+.card-icon{
+font-size:42px
+}
+.card h3{
+font-size:22px;
+margin:15px 0 7px
+}
+.card p{
+color:#98a7ba;
+font-size:14px
+}
+.tags{
+display:flex;
+gap:7px;
+flex-wrap:wrap;
+margin-top:18px
+}
+.tag{
+font-size:11px;
+padding:5px 8px;
+border-radius:8px;
+background:#ffffff08;
+color:#8795a8
+}
+
+.map{
+position:relative;
+height:600px;
+border-radius:30px;
+overflow:hidden;
+background:
+radial-gradient(circle at center,#1c3555,#080d18 60%);
+border:1px solid #ffffff15
+}
+.sun{
+position:absolute;
+left:50%;
+top:50%;
+transform:translate(-50%,-50%);
+width:80px;
+height:80px;
+border-radius:50%;
+background:radial-gradient(circle,#fff8a0,#ffbd3d,#ff5d32);
+box-shadow:0 0 80px #ff9b38
+}
+.orbit{
+position:absolute;
+left:50%;
+top:50%;
+transform:translate(-50%,-50%);
+border:1px solid #ffffff20;
+border-radius:50%
+}
+.o1{width:150px;height:150px}
+.o2{width:230px;height:230px}
+.o3{width:320px;height:320px}
+.o4{width:420px;height:420px}
+.o5{width:530px;height:530px}
+
+.world{
+position:absolute;
+border:0;
+border-radius:50%;
+cursor:pointer;
+transition:.3s;
+box-shadow:0 0 15px #ffffff20
+}
+.world:hover{transform:scale(1.5)}
+.mercury{width:14px;height:14px;background:#aaa;left:39%;top:37%}
+.venus{width:20px;height:20px;background:#d99461;left:62%;top:39%}
+.earth{width:23px;height:23px;background:#398ed4;left:36%;top:67%}
+.mars{width:18px;height:18px;background:#d85c45;left:69%;top:60%}
+.jupiter{width:43px;height:43px;background:#c99569;left:22%;top:25%}
+.saturn{width:38px;height:38px;background:#d7b278;left:76%;top:22%}
+.uranus{width:28px;height:28px;background:#67bdc7;left:20%;top:69%}
+.neptune{width:28px;height:28px;background:#466fc8;left:79%;top:71%}
+
+.map-info{
+position:absolute;
+left:25px;
+bottom:25px;
+width:340px;
+padding:20px;
+border-radius:18px;
+background:#050814e8;
+border:1px solid #ffffff18
+}
+.map-info h3{font-size:23px}
+.map-info p{color:#9eacc0;margin-top:7px}
+
+.gallery{
+display:grid;
+grid-template-columns:repeat(4,1fr);
+gap:20px
+}
+.gallery-card{
+background:#0d1523;
+border:1px solid #ffffff12;
+border-radius:20px;
+padding:15px;
+transition:.3s;
+cursor:pointer
+}
+.gallery-card:hover{
+transform:rotateX(4deg) rotateY(-4deg) translateY(-5px);
+border-color:#54dcff55
+}
+.gallery-image{
+height:160px;
+border-radius:15px;
+display:flex;
+align-items:center;
+justify-content:center;
+font-size:75px;
+background:
+radial-gradient(circle,#54dcff25,transparent 65%),
+#08101c
+}
+.gallery-card h3{margin-top:15px}
+.status{
+display:inline-block;
+margin-top:10px;
+padding:5px 9px;
+border-radius:20px;
+font-size:11px
+}
+.active{background:#55e59b18;color:#55e59b}
+.complete{background:#ffffff0b;color:#9ba8ba}
+.limited{background:#ffd16618;color:#ffd166}
+
+.instruments{
+display:grid;
+grid-template-columns:repeat(3,1fr);
+gap:20px
+}
+.instrument{
+padding:25px;
+background:#101827;
+border:1px solid #ffffff12;
+border-radius:20px
+}
+.diagram{
+height:120px;
+display:flex;
+align-items:center;
+justify-content:center;
+font-size:55px;
+border-radius:15px;
+background:radial-gradient(circle,#54dcff20,transparent 65%)
+}
+.instrument h3{margin:15px 0 5px}
+.instrument p{color:#95a3b6}
+
+.story{
+display:grid;
+gap:12px
+}
+.story-step{
+display:grid;
+grid-template-columns:70px 1fr auto;
+align-items:center;
+gap:20px;
+padding:20px;
+border-radius:18px;
+background:#101827;
+border:1px solid #ffffff12
+}
+.number{
+font-size:25px;
+font-weight:900;
+color:#54dcff
+}
+.story-step p{color:#95a3b6}
+.open{
+background:#ffffff0b;
+border:1px solid #ffffff18;
+color:white;
+padding:9px 14px;
+border-radius:9px;
+cursor:pointer
+}
+
+.quiz{
+background:linear-gradient(135deg,#54dcff12,#9f7aff12);
+border:1px solid #ffffff15;
+padding:35px;
+border-radius:25px
+}
+.quiz h3{font-size:26px;margin-bottom:20px}
+.answer{
+width:100%;
+text-align:left;
+padding:15px;
+margin:8px 0;
+border-radius:12px;
+border:1px solid #ffffff15;
+background:#0d1523;
+color:#fff;
+cursor:pointer
+}
+.answer:hover{border-color:#54dcff}
+.next{
+margin-top:15px;
+padding:12px 18px;
+border-radius:10px;
+border:0;
+cursor:pointer
+}
+#score{color:#54dcff;margin-top:15px;font-weight:bold}
+
+.sources{
+display:grid;
+grid-template-columns:repeat(2,1fr);
+gap:15px
+}
+.source{
+padding:20px;
+background:#101827;
+border:1px solid #ffffff12;
+border-radius:15px
+}
+.source a{
+color:#54dcff;
+text-decoration:none
+}
+
+footer{
+padding:50px 6%;
+border-top:1px solid #ffffff12;
+color:#7f8da0;
+text-align:center;
+font-size:13px
+}
+
+.modal-bg{
+position:fixed;
+inset:0;
+background:#000b;
+z-index:500;
+display:none;
+align-items:center;
+justify-content:center;
+padding:20px
+}
+.modal{
+max-width:800px;
+width:100%;
+max-height:90vh;
+overflow:auto;
+padding:35px;
+border-radius:25px;
+background:#101827;
+border:1px solid #ffffff20;
+position:relative
+}
+.close{
+position:absolute;
+right:20px;
+top:20px;
+border:1px solid #ffffff18;
+background:#ffffff0b;
+color:#fff;
+padding:8px 12px;
+border-radius:9px;
+cursor:pointer
+}
+.modal h2{font-size:36px;margin:10px 0}
+.modal p{color:#a5b2c5;line-height:1.8}
+.facts{
+display:grid;
+grid-template-columns:1fr 1fr;
+gap:10px;
+margin:20px 0
+}
+.fact{
+padding:15px;
+border-radius:12px;
+background:#ffffff08
+}
+.fact b{display:block;color:#54dcff}
+
+@media(max-width:900px){
+.stats{grid-template-columns:1fr 1fr}
+.grid{grid-template-columns:1fr 1fr}
+.gallery{grid-template-columns:1fr 1fr}
+.instruments{grid-template-columns:1fr 1fr}
+.planet{opacity:.25}
+}
+@media(max-width:600px){
+nav ul{display:none}
+.stats,.grid,.gallery,.instruments,.sources{grid-template-columns:1fr}
+.story-step{grid-template-columns:45px 1fr}
+.story-step button{display:none}
+.hero h1{letter-spacing:-3px}
+.map{height:500px}
+.map-info{width:calc(100% - 40px)}
+}
+</style>
+</head>
+
+<body>
+
+<nav>
+<div class="logo">NASA <span>HARDWARE</span> EXPLORER</div>
+<ul>
+<li><a href="#mission">Mission</a></li>
+<li><a href="#hardware">Hardware</a></li>
+<li><a href="#map">Solar System</a></li>
+<li><a href="#gallery">Gallery</a></li>
+<li><a href="#timeline">Timeline</a></li>
+<li><a href="#instruments">Instruments</a></li>
+<li><a href="#quiz">Quiz</a></li>
+</ul>
+</nav>
+
+<header class="hero">
+<div class="stars"></div>
+<div class="planet"></div>
+<div class="hero-content">
+<div class="badge">NASA SPACE APPS 2026 • CHALLENGE 1</div>
+<h1>WHAT DID NASA <span class="gradient">LEAVE BEHIND?</span></h1>
+<p>
+Explore the machines, instruments, experiments and spacecraft that humans
+have sent across the solar system — and discover the science they made possible.
+</p>
+<div class="buttons">
+<a class="btn primary" href="#hardware">🚀 Explore Hardware</a>
+<a class="btn secondary" href="#map">🌌 Explore Solar System</a>
+</div>
+</div>
+</header>
+
+<section id="mission">
+<div class="section-title">
+<div class="kicker">THE CHALLENGE</div>
+<h2>Hardware can outlive a mission.</h2>
+<p>
+Since the 1960s, NASA has left hardware across the solar system.
+Some machines completed their missions and became silent.
+Others continue operating far from Earth.
+Every piece of hardware has a story.
+</p>
+</div>
+
+<div class="stats">
+<div class="stat"><strong>50+</strong><span>Hardware stories</span></div>
+<div class="stat"><strong>8</strong><span>Solar-system worlds</span></div>
+<div class="stat"><strong>60+</strong><span>Years of exploration</span></div>
+<div class="stat"><strong>∞</strong><span>Scientific legacy</span></div>
+</div>
+</section>
+
+<section id="hardware">
+<div class="section-title">
+<div class="kicker">HARDWARE LIBRARY</div>
+<h2>Meet the machines.</h2>
+<p>Search, filter and open any mission to discover its purpose and scientific legacy.</p>
+</div>
+
+<div class="controls">
+<input id="search" class="search" placeholder="🔎 Search spacecraft, instrument, planet...">
+<button class="filter active" data-filter="all">All</button>
+<button class="filter" data-filter="Moon">Moon</button>
+<button class="filter" data-filter="Mars">Mars</button>
+<button class="filter" data-filter="Deep Space">Deep Space</button>
+<button class="filter" data-filter="Orbit">Orbiters</button>
+</div>
+
+<div id="hardwareGrid" class="grid"></div>
+</section>
+
+<section id="map">
+<div class="section-title">
+<div class="kicker">INTERACTIVE SOLAR SYSTEM</div>
+<h2>Where did the hardware go?</h2>
+<p>Click a world to discover the missions connected with it.</p>
+</div>
+
+<div class="map">
+<div class="sun"></div>
+<div class="orbit o1"></div>
+<div class="orbit o2"></div>
+<div class="orbit o3"></div>
+<div class="orbit o4"></div>
+<div class="orbit o5"></div>
+
+<button class="world mercury" onclick="world('Mercury','MESSENGER and Mariner 10 explored Mercury.')"></button>
+<button class="world venus" onclick="world('Venus','Magellan and Pioneer Venus studied Venus.')"></button>
+<button class="world earth" onclick="world('Earth','Earth receives the signals and science data from spacecraft.')"></button>
+<button class="world mars" onclick="world('Mars','NASA has sent orbiters, landers and rovers to Mars.')"></button>
+<button class="world jupiter" onclick="world('Jupiter','Voyager, Pioneer, Galileo and Juno explored Jupiter.')"></button>
+<button class="world saturn" onclick="world('Saturn','Voyager, Pioneer and Cassini explored Saturn.')"></button>
+<button class="world uranus" onclick="world('Uranus','Voyager 2 made the first close encounter with Uranus.')"></button>
+<button class="world neptune" onclick="world('Neptune','Voyager 2 remains the only spacecraft to visit Neptune.')"></button>
+
+<div class="map-info">
+<h3 id="worldName">Choose a world</h3>
+<p id="worldText">Click a planet to begin exploring.</p>
+</div>
+</div>
+</section>
+
+<section id="gallery">
+<div class="section-title">
+<div class="kicker">WHAT WAS LEFT BEHIND?</div>
+<h2>Hardware Gallery</h2>
+<p>See mission hardware and its status at a glance.</p>
+</div>
+<div id="galleryGrid" class="gallery"></div>
+</section>
+
+<section id="timeline">
+<div class="section-title">
+<div class="kicker">MISSION TIMELINE</div>
+<h2>From footprints to interstellar space.</h2>
+</div>
+
+<div class="story">
+
+<div class="story-step">
+<div class="number">01</div>
+<div><h3>1960s — First planetary explorers</h3><p>Early robotic missions began returning close-up measurements and images of other worlds.</p></div>
+</div>
+
+<div class="story-step">
+<div class="number">02</div>
+<div><h3>1969–1972 — Apollo</h3><p>Astronauts deployed scientific experiments and left hardware on the Moon.</p></div>
+</div>
+
+<div class="story-step">
+<div class="number">03</div>
+<div><h3>1977 — Voyager</h3><p>Voyager began its journey through the outer solar system.</p></div>
+</div>
+
+<div class="story-step">
+<div class="number">04</div>
+<div><h3>1997 — Sojourner</h3><p>The first successful Mars rover demonstrated robotic mobility on another planet.</p></div>
+</div>
+
+<div class="story-step">
+<div class="number">05</div>
+<div><h3>2004–2018 — Spirit & Opportunity</h3><p>Twin rovers investigated Martian geology and evidence of ancient water.</p></div>
+</div>
+
+<div class="story-step">
+<div class="number">06</div>
+<div><h3>2012 — Curiosity</h3><p>A mobile laboratory began studying the geology and ancient habitability of Gale Crater.</p></div>
+</div>
+
+<div class="story-step">
+<div class="number">07</div>
+<div><h3>2021→ — Perseverance</h3><p>Perseverance studies ancient environments, collects samples and demonstrates new technologies.</p></div>
+</div>
+
+</div>
+</section>
+
+<section id="instruments">
+<div class="section-title">
+<div class="kicker">INSIDE THE SPACECRAFT</div>
+<h2>Instruments turn worlds into data.</h2>
+</div>
+
+<div class="instruments">
+
+<div class="instrument">
+<div class="diagram">📷</div>
+<h3>Camera</h3>
+<p>Captures images of landscapes, rocks, clouds and spacecraft surroundings.</p>
+</div>
+
+<div class="instrument">
+<div class="diagram">🌈</div>
+<h3>Spectrometer</h3>
+<p>Studies light to identify materials and investigate chemical composition.</p>
+</div>
+
+<div class="instrument">
+<div class="diagram">🧲</div>
+<h3>Magnetometer</h3>
+<p>Measures magnetic fields around planets and in space.</p>
+</div>
+
+<div class="instrument">
+<div class="diagram">☢️</div>
+<h3>Particle Detector</h3>
+<p>Measures energetic particles travelling through space.</p>
+</div>
+
+<div class="instrument">
+<div class="diagram">🌡️</div>
+<h3>Thermal Sensor</h3>
+<p>Measures temperature and thermal properties of surfaces and environments.</p>
+</div>
+
+<div class="instrument">
+<div class="diagram">📡</div>
+<h3>Radio System</h3>
+<p>Sends commands to spacecraft and transmits scientific data back to Earth.</p>
+</div>
+
+</div>
+</section>
+
+<section>
+<div class="section-title">
+<div class="kicker">EXPLORE THE HARDWARE</div>
+<h2>Think like a mission designer.</h2>
+<p>Every spacecraft begins with a scientific question.</p>
+</div>
+
+<div class="story">
+
+<div class="story-step">
+<div class="number">01</div>
+<div><h3>Ask</h3><p>What do we want to discover?</p></div>
+<button class="open">Open</button>
+</div>
+
+<div class="story-step">
+<div class="number">02</div>
+<div><h3>Choose</h3><p>Which instruments can answer the question?</p></div>
+<button class="open">Open</button>
+</div>
+
+<div class="story-step">
+<div class="number">03</div>
+<div><h3>Survive</h3><p>How will the spacecraft handle radiation, temperature and distance?</p></div>
+<button class="open">Open</button>
+</div>
+
+<div class="story-step">
+<div class="number">04</div>
+<div><h3>Measure</h3><p>Turn the environment into scientific measurements.</p></div>
+<button class="open">Open</button>
+</div>
+
+<div class="story-step">
+<div class="number">05</div>
+<div><h3>Transmit</h3><p>Send the data across millions or billions of kilometres.</p></div>
+<button class="open">Open</button>
+</div>
+
+<div class="story-step">
+<div class="number">06</div>
+<div><h3>Discover</h3><p>Scientists interpret the evidence and learn something new.</p></div>
+<button class="open">Open</button>
+</div>
+
+</div>
+</section>
+
+<section id="quiz">
+<div class="section-title">
+<div class="kicker">MISSION CONTROL</div>
+<h2>Test your space knowledge 🚀</h2>
+</div>
+
+<div class="quiz">
+<h3 id="question"></h3>
+<div id="answers"></div>
+<div id="score">Score: 0 / 0</div>
+<button class="next" onclick="nextQuestion()">Next Question →</button>
+</div>
+</section>
+
+<section>
+<div class="section-title">
+<div class="kicker">SCIENCE LEGACY</div>
+<h2>Mission over. Science continues.</h2>
+<p>
+A spacecraft may stop communicating, but its discoveries can continue
+through scientific papers, archived data, engineering lessons and future missions.
+</p>
+</div>
+
+<div class="stats">
+<div class="stat"><strong>DATA</strong><span>Measurements remain available for scientists.</span></div>
+<div class="stat"><strong>SAMPLES</strong><span>Returned material can be studied for decades.</span></div>
+<div class="stat"><strong>DESIGN</strong><span>Engineering solutions inspire future missions.</span></div>
+<div class="stat"><strong>HISTORY</strong><span>Hardware becomes part of humanity's exploration story.</span></div>
+</div>
+</section>
+
+<section>
+<div class="section-title">
+<div class="kicker">OFFICIAL SOURCES</div>
+<h2>Go deeper.</h2>
+</div>
+
+<div class="sources">
+<div class="source">
+<b>NASA Science — Voyager</b>
+<br><a href="https://science.nasa.gov/mission/voyager/" target="_blank">Explore Voyager →</a>
+</div>
+
+<div class="source">
+<b>NASA Science — Mars Exploration Rovers</b>
+<br><a href="https://science.nasa.gov/mission/mars-exploration-rovers-spirit-and-opportunity/" target="_blank">Explore Spirit & Opportunity →</a>
+</div>
+
+<div class="source">
+<b>NASA Science — Lunar Reconnaissance Orbiter</b>
+<br><a href="https://science.nasa.gov/mission/lro/" target="_blank">Explore LRO →</a>
+</div>
+
+<div class="source">
+<b>NASA Science</b>
+<br><a href="https://science.nasa.gov/" target="_blank">Explore NASA missions →</a>
+</div>
+</div>
+</section>
+
+<footer>
+NASA Hardware Explorer • NASA Space Apps Challenge 2026<br>
+A student-created educational concept. Not an official NASA website.
+</footer>
+
+<div id="modalBg" class="modal-bg">
+<div class="modal">
+<button class="close" onclick="closeModal()">✕</button>
+<div id="modalContent"></div>
+</div>
+</div>
+
+<script>
+
+const missions=[
+
+["Apollo Lunar Surface Experiments","Moon","🌕","1969–1972","Inactive",
+"Scientific packages left on the Moon to study seismic, thermal and environmental properties.",
+["Seismology","Heat Flow","Lunar Science"]],
+
+["Lunar Reconnaissance Orbiter","Moon","🌙","2009→","Active",
+"Orbiter mapping the Moon and studying its terrain, temperature, radiation and illumination.",
+["Mapping","Radiation","Thermal"]],
+
+["Surveyor 1","Moon","🌕","1966","Mission complete",
+"The first U.S. spacecraft to make a soft landing on the Moon.",
+["Lander","Lunar Surface"]],
+
+["Surveyor 3","Moon","🌕","1967","Mission complete",
+"Studied lunar soil and surface properties.",
+["Lander","Soil"]],
+
+["Lunar Prospector","Moon","🌕","1998–1999","Mission complete",
+"Mapped lunar composition and searched for evidence of hydrogen near the lunar poles.",
+["Composition","Polar Science"]],
+
+["Lunar Orbiter 1","Moon","🌕","1966–1967","Mission complete",
+"Photographed the Moon to help select landing sites for Apollo.",
+["Photography","Mapping"]],
+
+["Lunar Orbiter 5","Moon","🌕","1967","Mission complete",
+"Completed detailed photographic coverage of the Moon.",
+["Mapping","Photography"]],
+
+["LCROSS","Moon","🌕","2009","Mission complete",
+"Created an intentional lunar impact to study material ejected from the surface.",
+["Impact","Water Ice"]],
+
+["LADEE","Moon","🌙","2013–2014","Mission complete",
+"Studied the extremely thin lunar atmosphere and dust environment.",
+["Atmosphere","Dust"]],
+
+["Apollo Lunar Module Stages","Moon","🚀","1969–1972","Left on Moon",
+"Landing stages remained at historic Apollo landing sites after astronauts departed.",
+["Apollo","Surface Hardware"]],
+
+["Viking 1","Mars","🔴","1975–1982","Mission complete",
+"One of the first successful U.S. Mars landers, studying the Martian surface and atmosphere.",
+["Lander","Biology"]],
+
+["Viking 2","Mars","🔴","1975–1980","Mission complete",
+"A sister Viking lander that expanded early Mars surface science.",
+["Lander","Soil"]],
+
+["Mars Pathfinder","Mars","🛬","1997","Mission complete",
+"Demonstrated landing technology and delivered the Sojourner rover.",
+["Lander","Technology"]],
+
+["Sojourner","Mars","🤖","1997","Mission complete",
+"A small rover that demonstrated robotic mobility and investigated Martian rocks and soil.",
+["Rover","APXS"]],
+
+["Spirit","Mars","🤖","2004–2010","Mission complete",
+"Investigated rocks, soil and evidence of ancient water on Mars.",
+["Rover","Geology"]],
+
+["Opportunity","Mars","🤖","2004–2018","Mission complete",
+"Studied Martian rocks and evidence that water once existed on the surface.",
+["Rover","Water History"]],
+
+["Curiosity","Mars","🧭","2012→","Active",
+"A mobile laboratory studying rocks, chemistry, geology and ancient habitability.",
+["SAM","ChemCam","Drill"]],
+
+["Perseverance","Mars","🧪","2021→","Active",
+"Studies ancient environments and collects scientifically selected Martian samples.",
+["Sample Caching","Astrobiology"]],
+
+["MOXIE","Mars","🫧","2021–2023","Technology demo complete",
+"Demonstrated production of oxygen from the Martian atmosphere.",
+["Oxygen","Technology"]],
+
+["Mars Odyssey","Mars","🛰️","2001→","Active",
+"A long-lived orbiter mapping Mars and supporting surface missions.",
+["Orbiter","Mapping"]],
+
+["Mars Reconnaissance Orbiter","Mars","🛰️","2006→","Active",
+"High-resolution orbital imaging and communications support for Mars missions.",
+["HiRISE","Relay"]],
+
+["Mars Global Surveyor","Mars","🛰️","1996–2006","Mission complete",
+"Mapped Mars and monitored its surface and atmosphere.",
+["Mapping","Atmosphere"]],
+
+["MOLA","Mars","📐","1996–2006","Mission complete",
+"A laser altimeter that produced a detailed topographic map of Mars.",
+["Laser","Topography"]],
+
+["InSight","Mars","📡","2018–2022","Mission complete",
+"A stationary geophysical lander that measured marsquakes and heat flow.",
+["Seismology","Geophysics"]],
+
+["Phoenix","Mars","❄️","2008","Mission complete",
+"A polar lander that studied Martian soil and water ice.",
+["Polar Mars","Soil"]],
+
+["Mariner 4","Mars","📷","1964–1967","Mission complete",
+"Returned the first close-up images of Mars.",
+["Photography","Flyby"]],
+
+["Mariner 9","Mars","🛰️","1971–1972","Mission complete",
+"The first spacecraft to orbit another planet and map Mars.",
+["Orbiter","Mapping"]],
+
+["Mariner 10","Mercury","☿️","1973–1975","Mission complete",
+"The first spacecraft to fly by Mercury and use gravity assist.",
+["Mercury","Gravity Assist"]],
+
+["MESSENGER","Mercury","☿️","2004–2015","Mission complete",
+"Orbited Mercury and studied its surface, composition and magnetic environment.",
+["Orbiter","Magnetometer"]],
+
+["Magellan","Venus","♀️","1989–1994","Mission complete",
+"Used radar to map the surface of Venus through its thick clouds.",
+["Radar","Mapping"]],
+
+["Pioneer Venus Orbiter","Venus","♀️","1978–1992","Mission complete",
+"Studied Venus and its atmosphere and ionosphere.",
+["Atmosphere","Orbiter"]],
+
+["Pioneer 10","Jupiter","🪐","1972–2003","Mission complete",
+"The first spacecraft to cross the asteroid belt and encounter Jupiter.",
+["Jupiter","Deep Space"]],
+
+["Pioneer 11","Saturn","🪐","1973–1995","Mission complete",
+"The first spacecraft to encounter Saturn.",
+["Saturn","Flyby"]],
+
+["Galileo","Jupiter","🪐","1989–2003","Mission complete",
+"Orbited Jupiter and studied its atmosphere, magnetosphere and moons.",
+["Orbiter","Jupiter"]],
+
+["Juno","Jupiter","🪐","2011→","Active",
+"Studies Jupiter's gravity, magnetic field, atmosphere and interior.",
+["Gravity","Magnetometer"]],
+
+["Voyager 1","Deep Space","📡","1977→","Limited operations",
+"A historic spacecraft traveling through interstellar space.",
+["Interstellar","RTG","Particles"]],
+
+["Voyager 2","Deep Space","📡","1977→","Limited operations",
+"The only spacecraft to have flown past Jupiter, Saturn, Uranus and Neptune.",
+["4 Giant Planets","Interstellar"]],
+
+["Voyager Magnetometer","Deep Space","🧲","1977→","Limited operations",
+"Measures magnetic fields in planetary and interstellar environments.",
+["Magnetic Field","Deep Space"]],
+
+["Voyager Imaging System","Deep Space","📷","1977→","Limited operations",
+"The camera system responsible for many iconic views of the outer solar system.",
+["Camera","Imaging"]],
+
+["Voyager Cosmic Ray Subsystem","Deep Space","☢️","1977→","Limited operations",
+"Measures energetic particles in space.",
+["Particles","Radiation"]],
+
+["Cassini","Saturn","🪐","1997–2017","Mission complete",
+"Explored Saturn, its rings and moons for more than a decade.",
+["Saturn","Titan","Rings"]],
+
+["Cassini Radar","Saturn","📡","1997–2017","Mission complete",
+"Used radar to study Titan's surface through its thick atmosphere.",
+["Radar","Titan"]],
+
+["Huygens Probe","Titan","🛬","1997–2005","Mission complete",
+"Descended through Titan's atmosphere and returned surface measurements.",
+["Titan","Lander"]],
+
+["New Horizons","Deep Space","❄️","2006→","Active",
+"Made humanity's first close exploration of Pluto and continued into the Kuiper Belt.",
+["Pluto","Kuiper Belt"]],
+
+["Stardust","Comet","☄️","1999–2011","Mission complete",
+"Collected particles from comet Wild 2 and returned them to Earth.",
+["Comet","Sample Return"]],
+
+["Deep Impact","Comet","☄️","2005–2013","Mission complete",
+"Impacted comet Tempel 1 to investigate material beneath its surface.",
+["Impact","Comet"]],
+
+["OSIRIS-REx","Asteroid","🪨","2016–2023","Sample returned",
+"Collected a sample from asteroid Bennu and returned it to Earth.",
+["Asteroid","Sample Return"]],
+
+["Lucy","Asteroids","🪨","2021→","Active",
+"Explores Trojan asteroids to investigate the early history of the solar system.",
+["Asteroids","Jupiter Trojans"]],
+
+["LRO Instruments","Moon","🔬","2009→","Active",
+"A suite of instruments studying lunar terrain, temperature, radiation and illumination.",
+["CRaTER","Diviner","LAMP"]],
+
+["Curiosity Instruments","Mars","🔬","2012→","Active",
+"A sophisticated collection of cameras, spectrometers and environmental sensors.",
+["ChemCam","SAM","MAHLI"]],
+
+["Perseverance Instruments","Mars","🔬","2021→","Active",
+"Scientific instruments investigating ancient Martian environments and potential biosignatures.",
+["SHERLOC","PIXL","Mastcam-Z"]],
+
+["New Horizons Instruments","Deep Space","🔬","2006→","Active",
+"Cameras and sensors that explored Pluto and the Kuiper Belt.",
+["Ralph","LORRI","SWAP"]]
+
+];
+
+let activeFilter="all";
+
+function renderHardware(){
+
+const query=document.getElementById("search").value.toLowerCase();
+
+const filtered=missions.filter(m=>{
+const matchesFilter=
+activeFilter==="all"||
+m[1]===activeFilter||
+(activeFilter==="Orbit" && 
+["Mercury","Venus","Jupiter","Saturn","Moon"].includes(m[1]));
+
+const matchesSearch=
+m.join(" ").toLowerCase().includes(query);
+
+return matchesFilter && matchesSearch;
+});
+
+document.getElementById("hardwareGrid").innerHTML=filtered.map(m=>{
+
+const index=missions.indexOf(m);
+
+return `
+<div class="card" onclick="openMission(${index})">
+<div class="card-icon">${m[2]}</div>
+<h3>${m[0]}</h3>
+<p>${m[5]}</p>
+<div class="tags">
+${m[6].map(t=>`<span class="tag">${t}</span>`).join("")}
+</div>
+</div>`;
+
+}).join("");
+
+if(!filtered.length){
+document.getElementById("hardwareGrid").innerHTML=
+"<p style='color:#9eacc0'>No hardware found. Try another search.</p>";
+}
+}
+
+document.getElementById("search").addEventListener("input",renderHardware);
+
+document.querySelectorAll(".filter").forEach(button=>{
+button.addEventListener("click",()=>{
+document.querySelectorAll(".filter").forEach(b=>b.classList.remove("active"));
+button.classList.add("active");
+activeFilter=button.dataset.filter;
+renderHardware();
+});
+});
+
+function openMission(i){
+
+const m=missions[i];
+
+document.getElementById("modalContent").innerHTML=`
+
+<div class="kicker">${m[1]} • ${m[3]}</div>
+
+<h2>${m[2]} ${m[0]}</h2>
+
+<p>${m[5]}</p>
+
+<div class="facts">
+
+<div class="fact">
+<b>Destination</b>
+${m[1]}
+</div>
+
+<div class="fact">
+<b>Era</b>
+${m[3]}
+</div>
+
+<div class="fact">
+<b>Status</b>
+${m[4]}
+</div>
+
+<div class="fact">
+<b>Hardware Type</b>
+${m[6].join(", ")}
+</div>
+
+</div>
+
+<h3>Why it matters</h3>
+
+<p>
+This hardware converted an unreachable environment into measurable
+scientific evidence. Its observations, engineering lessons or returned
+samples can continue contributing to science long after the hardware
+itself stops operating.
+</p>
+
+`;
+
+document.getElementById("modalBg").style.display="flex";
+}
+
+function closeModal(){
+document.getElementById("modalBg").style.display="none";
+}
+
+document.getElementById("modalBg").addEventListener("click",e=>{
+if(e.target.id==="modalBg")closeModal();
+});
+
+function world(name,text){
+document.getElementById("worldName").textContent=name;
+document.getElementById("worldText").textContent=text;
+}
+
+function renderGallery(){
+
+document.getElementById("galleryGrid").innerHTML=
+missions.map((m,i)=>{
+
+let statusClass="complete";
+
+if(m[4].includes("Active"))statusClass="active";
+if(m[4].includes("Limited"))statusClass="limited";
+
+return `
+<div class="gallery-card" onclick="openMission(${i})">
+<div class="gallery-image">${m[2]}</div>
+<h3>${m[0]}</h3>
+<small>${m[1]} • ${m[3]}</small>
+<br>
+<span class="status ${statusClass}">${m[4]}</span>
+</div>`;
+
+}).join("");
+
+}
+
+const questions=[
+
+[
+"Which spacecraft carried the Sojourner rover?",
+["Mars Pathfinder","Cassini","Galileo","Voyager 2"],
+0
+],
+
+[
+"Which instrument identifies materials using light?",
+["Magnetometer","Spectrometer","Antenna","Thermometer"],
+1
+],
+
+[
+"Which spacecraft visited Uranus and Neptune?",
+["Curiosity","Voyager 2","Juno","LRO"],
+1
+],
+
+[
+"What powers the Voyager spacecraft?",
+["Solar panels","RTGs","Wind turbines","Batteries only"],
+1
+],
+
+[
+"What did MOXIE demonstrate?",
+["Oxygen production","Radar mapping","Earthquake detection","Sample return"],
+0
+]
+
+];
+
+let questionIndex=0;
+let score=0;
+let answered=false;
+
+function showQuestion(){
+
+const q=questions[questionIndex];
+
+document.getElementById("question").textContent=q[0];
+
+document.getElementById("answers").innerHTML=
+q[1].map((answer,i)=>
+`<button class="answer" onclick="answerQuestion(${i})">${answer}</button>`
+).join("");
+
+document.getElementById("score").textContent=
+`Score: ${score} / ${questionIndex}`;
+
+answered=false;
+
+}
+
+function answerQuestion(i){
+
+if(answered)return;
+
+answered=true;
+
+const correct=questions[questionIndex][2];
+
+if(i===correct)score++;
+
+document.getElementById("score").textContent=
+`Score: ${score} / ${questionIndex+1}`;
+
+const buttons=document.querySelectorAll(".answer");
+
+buttons[correct].style.borderColor="#55e59b";
+buttons[correct].style.background="#55e59b18";
+
+if(i!==correct){
+buttons[i].style.borderColor="#ff6875";
+buttons[i].style.background="#ff687518";
+}
+
+}
+
+function nextQuestion(){
+
+if(questionIndex<questions.length-1){
+questionIndex++;
+showQuestion();
+}else{
+questionIndex=0;
+score=0;
+showQuestion();
+}
+
+}
+
+renderHardware();
+renderGallery();
+showQuestion();
+
+</script>
+
+</body>
+</html>
